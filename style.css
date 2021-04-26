@@ -9,3 +9,8 @@
     top: 0;
     left: 0;
 }
+
+.colorer {
+    position: absolute;
+    z-index: 2;
+}

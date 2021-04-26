@@ -1,8 +1,11 @@
 let canvas = document.getElementById("canvas")
 let cursor = document.getElementById("cursor")
+
 let ctx = canvas.getContext('2d'); 
-let ctx2 = cursor.getContext('2d')
+let ctx2 = cursor.getContext('2d');
+
 let drawing = false;
+let colorDeb = false;
 
 function drawCircle(pos) {
     var color = document.getElementById("color").value;
@@ -47,8 +50,8 @@ function mouseUp() {
 }
 
 function onClick(pos) {
-    if (pos.clientY < 15) {
-        console.log("Out of range");
+    if (colorDeb == true) {
+        console.log("On button");
         return;
     }
 
@@ -77,6 +80,14 @@ function mouseMove(pos) {
     }
     drawOutline(pos);
 
+}
+
+document.getElementById("color").onmouseover = function() {
+    colorDeb = true;
+}
+
+document.getElementById("color").onmouseout = function() {
+    colorDeb = false;
 }
 
 prepare();
