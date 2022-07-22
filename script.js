@@ -6,16 +6,17 @@ let ctx2 = cursor.getContext('2d');
 
 let drawing = false;
 let colorDeb = false;
+let radius = 25
+let mouseAt = undefined;
 
 function drawCircle(pos) {
     var color = document.getElementById("color").value;
 
-    var R = 45;
     var X = pos.offsetX;
     var Y = pos.offsetY;
 
     ctx.beginPath();
-    ctx.arc(X, Y, R, 0, 2 * Math.PI, false);
+    ctx.arc(X, Y, radius, 0, 2 * Math.PI, false);
 
     ctx.lineWidth = 3;
     ctx.strokeStyle = color;
@@ -27,7 +28,6 @@ function drawCircle(pos) {
 }
 
 function drawOutline(pos) {
-    var R = 45;
     var X = pos.offsetX;
     var Y = pos.offsetY;
 
@@ -35,13 +35,13 @@ function drawOutline(pos) {
     ctx2.restore();
 
     ctx2.beginPath();
-    ctx2.arc(X, Y, R, 0, 2 * Math.PI, false);
+    ctx2.arc(X, Y, radius, 0, 2 * Math.PI, false);
     
     ctx2.lineWidth = 1;
     ctx2.strokeStyle = "#000000";
     
     ctx2.stroke();
-    
+    mouseAt = pos;
 }
 
 
@@ -60,16 +60,15 @@ function onClick(pos) {
     drawCircle(pos);
 
     drawing = true;
-
 }
 
 function prepare() {
     document.body.style.cursor = "none";
 
-    ctx.canvas.width  = window.innerWidth;
-    ctx.canvas.height = window.innerHeight;
-    ctx2.canvas.width  = window.innerWidth;
-    ctx2.canvas.height = window.innerHeight;
+    ctx.canvas.width  = window.innerWidth * 0.99;
+    ctx.canvas.height = window.innerHeight * 0.98;
+    ctx2.canvas.width  = window.innerWidth * 0.99;
+    ctx2.canvas.height = window.innerHeight * 0.98;
 }
 
 function mouseMove(pos) {
@@ -78,8 +77,27 @@ function mouseMove(pos) {
             drawCircle(pos);
         }, 100);
     }
+    
     drawOutline(pos);
+}
 
+function scrolled(we) {
+    if (we.wheelDeltaY >= 0) {
+        if (radius >= 125) {
+            return;
+        }
+
+        radius += 2;
+    } else {
+        if (radius <= 5) {
+            return;
+        }
+        
+        radius -= 2;
+    }
+
+    console.log(radius);
+    drawOutline(mouseAt);
 }
 
 document.getElementById("color").onmouseover = function() {
@@ -91,6 +109,9 @@ document.getElementById("color").onmouseout = function() {
 }
 
 prepare();
+
+document.addEventListener("wheel", scrolled)
 document.addEventListener("mousemove", mouseMove);
 document.addEventListener("mouseup", mouseUp);
 document.addEventListener("mousedown", onClick);
+window.addEventListener("resize", prepare)

@@ -1,7 +1,15 @@
+* {
+    padding: 0;
+   
+    margin-bottom: 0;
+    box-sizing: content-box;
+    position: fixed;
+}
+
+
 .wrapper {
     position: relative;
-    width: 400px;
-    height: 300px;
+    margin: 1.5%;
 }
 
 .wrapper canvas {
@@ -10,7 +18,16 @@
     left: 0;
 }
 
-.colorer {
+.colorpicker {
     position: absolute;
     z-index: 2;
+}
+
+.scrolltext {
+    margin-left: 5vw;
+    margin-top: 0.5vh;
+    position: absolute;
+    width: 25vw;
+    z-index: 0;
+    user-select: none;
 }
